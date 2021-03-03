@@ -51,14 +51,25 @@ class App extends Component {
       number: data.number,
     };
 
-    const sameName = this.state.contacts.some(
+    const sameName = this.state.contacts.find(
       (contact) =>
         contact.name === addContact.name && contact.number === addContact.number
     );
+
+    const sameNumber = this.state.contacts.find(
+      (contact) => contact.number === addContact.number
+    );
+
     if (sameName) {
       alert(`${addContact.name} is already in contacts!`);
       return;
     }
+
+    if (sameNumber) {
+      alert(`${addContact.number} is already in contacts!`);
+      return;
+    }
+
     this.setState({
       contacts: [...contacts, addContact],
     });
