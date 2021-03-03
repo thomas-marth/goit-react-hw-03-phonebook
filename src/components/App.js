@@ -53,7 +53,7 @@ class App extends Component {
 
     const sameName = this.state.contacts.some(
       (contact) =>
-        contact.name === addContact.name || contact.number === addContact.number
+        contact.name === addContact.name && contact.number === addContact.number
     );
     if (sameName) {
       alert(`${addContact.name} is already in contacts!`);
