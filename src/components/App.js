@@ -4,10 +4,6 @@ import Filter from "./Filter";
 import ContactList from "./ContactList";
 import shortid from "shortid";
 
-const filterContacts = (contacts, filter) =>
-  contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
 class App extends Component {
   state = {
     contacts: [],
@@ -33,6 +29,13 @@ class App extends Component {
     this.setState({ filter: value });
   };
 
+  filterContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
   onDeleteContact = (id) => {
     this.setState({
       contacts: this.state.contacts.filter((contact) => contact.id !== id),
@@ -48,7 +51,11 @@ class App extends Component {
       number: data.number,
     };
 
-    if (contacts.find((contact) => contact.name === addContact.name)) {
+    const sameName = this.state.contacts.some(
+      (contact) =>
+        contact.name === addContact.name || contact.number === addContact.number
+    );
+    if (sameName) {
       alert(`${addContact.name} is already in contacts!`);
       return;
     }
@@ -59,7 +66,7 @@ class App extends Component {
 
   render() {
     const { contacts, filter } = this.state;
-    const filteredContacts = filterContacts(contacts, filter);
+
     return (
       <>
         <h1>Phonebook</h1>
@@ -72,7 +79,7 @@ class App extends Component {
               <Filter value={filter} onChangeFilter={this.changeFilter} />
             )}
             <ContactList
-              contacts={filteredContacts}
+              contacts={this.filterContacts()}
               onDeleteContact={this.onDeleteContact}
             />
           </>
